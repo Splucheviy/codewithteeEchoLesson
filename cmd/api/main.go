@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/Splucheviy/codewithteeEchoLesson/cmd/api/handlers"
 	"github.com/Splucheviy/codewithteeEchoLesson/common"
@@ -13,7 +12,7 @@ import (
 type Application struct {
 	logger  echo.Logger
 	server  *echo.Echo
-	handler handlers.Hadler
+	handler handlers.Handler
 }
 
 func main() {
@@ -23,7 +22,7 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	h := handlers.Hadler{
+	h := handlers.Handler{
 		DB: db,
 	}
 	app := Application{
@@ -31,9 +30,7 @@ func main() {
 		server:  e,
 		handler: h,
 	}
+	app.routes(h)
 	fmt.Println(app)
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
 	e.Logger.Fatal(e.Start(env.AppPort))
 }

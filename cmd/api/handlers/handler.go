@@ -2,6 +2,6 @@ package handlers
 
 import "gorm.io/gorm"
 
-type Hadler struct {
+type Handler struct {
 	DB *gorm.DB
 }
