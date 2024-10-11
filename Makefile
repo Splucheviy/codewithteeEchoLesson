@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	go build -v cmd/api/main.go
+	go build -v main.go
 
 .PHONY: test
 test:
@@ -8,7 +8,7 @@ test:
 
 .PHONY: run
 run:
-	go run cmd/api/main.go
+	go run main.go
 
 .PHONY: tidy
 tidy:
