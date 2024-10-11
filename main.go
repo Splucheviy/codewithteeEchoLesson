@@ -3,17 +3,15 @@ package main
 import (
 	"fmt"
 
+	"github.com/Splucheviy/codewithteeEchoLesson/cmd/api"
 	"github.com/Splucheviy/codewithteeEchoLesson/cmd/api/handlers"
+	"github.com/Splucheviy/codewithteeEchoLesson/cmd/api/middlewares"
 	"github.com/Splucheviy/codewithteeEchoLesson/common"
 	"github.com/Splucheviy/codewithteeEchoLesson/configs"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-type Application struct {
-	logger  echo.Logger
-	server  *echo.Echo
-	handler handlers.Handler
-}
 
 func main() {
 	env := configs.NewEnv()
@@ -25,12 +23,14 @@ func main() {
 	h := handlers.Handler{
 		DB: db,
 	}
-	app := Application{
-		logger:  e.Logger,
-		server:  e,
-		handler: h,
+	app := api.Application{
+		Logger:  e.Logger,
+		Server:  e,
+		Handler: h,
 	}
-	app.routes(h)
+	e.Use(middlewares.CustomMiddleware, middleware.Logger())
+	app.Routes(h)
 	fmt.Println(app)
 	e.Logger.Fatal(e.Start(env.AppPort))
 }
+
